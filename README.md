@@ -38,7 +38,8 @@ git status
 This is the code from the feature branch.
 =======
 This is the code from the feature branch.
->>>>>>>><feature/new-feature>
+
+>>>>><feature/new-feature>
 
 select any one option -
    - Accept Current Change  
