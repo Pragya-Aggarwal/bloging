@@ -29,7 +29,7 @@ import axios from "axios";
 // Function to fetch blogs
 const fetchBlogs = async () => {
   const { data } = await axios.get("http://localhost:3000/posts/allposts");
-  return data;
+  return data?.returnParameter?.posts;
 };
 
 // Function to delete a blog

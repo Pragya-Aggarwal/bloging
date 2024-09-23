@@ -19,7 +19,7 @@ import axios from "axios";
 
 const fetchUsers = async () => {
   const { data } = await axios.get("http://localhost:3000/users/users");
-  return data;
+  return data?.returnParameter?.users;
 };
 
 function UsersTable() {
