@@ -11,7 +11,7 @@ const AppRoutes = () => {
         <Route path="/" element={<Blogs />} />  {/* Default route to Blogs */}
         <Route path="/blogs" element={<Blogs />} />
         <Route path="/addBlogs" element={<BlogsAddForm />} />
-        <Route path="/user" element={<UsersTable />} />
+        <Route path="/users" element={<UsersTable />} />
       </Routes>
     </Router>
   );
