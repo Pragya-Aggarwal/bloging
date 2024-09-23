@@ -10,7 +10,7 @@ main().catch((err) => console.log(err));
 
 async function main() {
     await mongoose
-        .connect("mongodb://127.0.0.1:27017/userData", {
+        .connect("mongodb://172.30.64.1:27017/userData", {
             useNewUrlParser: true,
             useUnifiedTopology: true,
         })

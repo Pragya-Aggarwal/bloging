@@ -1,0 +1,25 @@
+services:
+  backend:
+    build:
+      context: ./backend  # Adjust the path to your backend
+    ports:
+      - "3000:3000"
+    networks:
+      - mern-project
+    environment:
+       MONGO_URI: mongodb://172.30.64.1:27017/userData  # Connect to MongoDB service
+
+
+  frontend:
+    build:
+      context: ./frontend  # Adjust the path to your frontend
+    ports:
+      - "5173:5173"
+    networks:
+      - mern-project
+    environment:
+      REACT_APP_API_URL: http://localhost:3000  # URL for the backend API
+
+networks:
+  mern-project:
+    driver: bridge
