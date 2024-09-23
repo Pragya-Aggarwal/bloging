@@ -34,9 +34,8 @@ git pull origin <main branch>
 git status
 
 3. You’ll see a list of files with conflicts. Open one of those files in your text editor, and you’ll see conflict markers that look like this:
-
-<<<<<<< HEAD
-This is the code from the main branch.
+<<<<<< HEAD
+This is the code from the feature branch.
 =======
 This is the code from the feature branch.
 >>>>>>> feature/new-feature
