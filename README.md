@@ -56,7 +56,7 @@ git commit -m "comment"
 git push origin <Branch>
    
 
-
+NOTE---If You want to run Docker file you have to change the IpAddress(MongoDB URI) in docker file and backend>index.js
 
 
 
