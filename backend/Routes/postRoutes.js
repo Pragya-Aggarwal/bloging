@@ -10,32 +10,104 @@ router.post("/", async (req, res) => {
     const newPost = new Posts(postData);
     try {
         const savedPost = await newPost.save();
-        res.status(201).send(savedPost);
+        res.status(201).json({
+            response: {
+                status: {
+                    statusCode: 201,
+                    message: "Post created successfully",
+                },
+            },
+            returnParameter: { post: savedPost },
+        });
     } catch (err) {
-        res.status(400).send(err);
+        res.status(400).json({
+            response: {
+                status: {
+                    statusCode: 400,
+                    message: "Error creating post",
+                },
+            },
+            returnParameter: { error: err.message },
+        });
     }
 });
 
 // Read all blog posts
 router.get("/allposts", async (req, res) => {
-    const posts = await Posts.find({});
-    res.send(posts);
+    try {
+        const posts = await Posts.find({});
+        res.status(200).json({
+            response: {
+                status: {
+                    statusCode: 200,
+                    message: "Posts fetched successfully",
+                },
+            },
+            returnParameter: { posts },
+        });
+    } catch (error) {
+        res.status(500).json({
+            response: {
+                status: {
+                    statusCode: 500,
+                    message: "Error fetching posts",
+                },
+            },
+            returnParameter: { error: error.message },
+        });
+    }
 });
 
 // Read a single blog post
-router.get("/singlePosts/:id", (req, res) => {
-    const post = Posts.find((p) => p.id === parseInt(req.params.id));
-    if (!post) return res.status(404).send("Post not found");
-    res.json(post);
+router.get("/singlePosts/:id", async (req, res) => {
+    try {
+        const post = await Posts.findById(req.params.id);
+        if (!post) {
+            return res.status(404).json({
+                response: {
+                    status: {
+                        statusCode: 404,
+                        message: "Post not found",
+                    },
+                },
+            });
+        }
+        res.status(200).json({
+            response: {
+                status: {
+                    statusCode: 200,
+                    message: "Post fetched successfully",
+                },
+            },
+            returnParameter: { post },
+        });
+    } catch (error) {
+        res.status(500).json({
+            response: {
+                status: {
+                    statusCode: 500,
+                    message: "Error fetching post",
+                },
+            },
+            returnParameter: { error: error.message },
+        });
+    }
 });
 
 // Update a blog post
 router.put("/updatePosts/:id", async (req, res) => {
     try {
-        // Find the post by ID
         const post = await Posts.findById(req.params.id);
-
-        if (!post) return res.status(404).send("Post not found");
+        if (!post) {
+            return res.status(404).json({
+                response: {
+                    status: {
+                        statusCode: 404,
+                        message: "Post not found",
+                    },
+                },
+            });
+        }
 
         // Update the post fields
         post.name = req.body.name || post.name;
@@ -45,11 +117,25 @@ router.put("/updatePosts/:id", async (req, res) => {
         // Save the updated post
         await post.save();
 
-        // Respond with the updated post
-        res.json(post);
+        res.status(200).json({
+            response: {
+                status: {
+                    statusCode: 200,
+                    message: "Post updated successfully",
+                },
+            },
+            returnParameter: { post },
+        });
     } catch (error) {
-        console.error(error);
-        res.status(500).send("Server error");
+        res.status(500).json({
+            response: {
+                status: {
+                    statusCode: 500,
+                    message: "Error updating post",
+                },
+            },
+            returnParameter: { error: error.message },
+        });
     }
 });
 
@@ -57,23 +143,37 @@ router.put("/updatePosts/:id", async (req, res) => {
 router.delete("/deletePosts/:id", async (req, res) => {
     const postId = req.params.id;
 
-    console.log("Attempting to delete post with ID:", postId); // Log the ID being deleted
-
     try {
         const deletedPost = await Posts.findByIdAndDelete(postId);
-
         if (!deletedPost) {
-            return res.status(404).json({ message: "Post not found" });
+            return res.status(404).json({
+                response: {
+                    status: {
+                        statusCode: 404,
+                        message: "Post not found",
+                    },
+                },
+            });
         }
 
-        // No content to return
-        return res.status(200).json({ status: 200, message: "Post deleted successfully" });
-
+        return res.status(200).json({
+            response: {
+                status: {
+                    statusCode: 200,
+                    message: "Post deleted successfully",
+                },
+            },
+        });
     } catch (error) {
-        console.error("Error deleting post:", error); // Log the error for debugging
-        return res
-            .status(500)
-            .json({ message: "Internal server error", error: error.message });
+        return res.status(500).json({
+            response: {
+                status: {
+                    statusCode: 500,
+                    message: "Internal server error",
+                },
+            },
+            returnParameter: { error: error.message },
+        });
     }
 });
 
